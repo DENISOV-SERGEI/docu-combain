@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Сертификат об окончании курса</title>
+    <style>
+        @page {
+            size: A4 landscape; /* Альбомная ориентация страницы */
+            margin: 0;
+        }
+
+        body {
+            font-family: Georgia, "Times New Roman", serif;
+            background-color: #f7f4eb;
+            margin: 0;
+            padding: 30px;
+            -webkit-print-color-adjust: exact;
+        }
+
+        /* Главный контейнер с двойной декоративной рамкой */
+        .certificate-container {
+            background-color: #ffffff;
+            border: 2px solid #c3a475;
+            padding: 12px;
+            box-shadow: 0 4px 20px rgba(74, 63, 53, 0.08);
+            position: relative;
+            box-sizing: border-box;
+            height: calc(100vh - 60px); /* Привязка к высоте печатного листа */
+        }
+
+        .certificate-inner {
+            border: 6px double #c3a475;
+            padding: 35px 50px 40px 50px; /* Оптимизировали отступы сверху и снизу */
+            text-align: center;
+            background-image: radial-gradient(circle, #ffffff 70%, #fffcf7 100%);
+            box-sizing: border-box;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Декоративные уголки на CSS */
+        .corner {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border: 3px solid #8c6f47;
+            z-index: 10;
+        }
+        .top-left     { top: 25px; left: 25px; border-right: none; border-bottom: none; }
+        .top-right    { top: 25px; right: 25px; border-left: none; border-bottom: none; }
+        .bottom-left  { bottom: 25px; left: 25px; border-right: none; border-top: none; }
+        .bottom-right { bottom: 25px; right: 25px; border-left: none; border-top: none; }
+
+        /* Элементы контента */
+        .brand-header {
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: #8c765c;
+            margin-bottom: 25px;
+            font-weight: bold;
+        }
+
+        h1 {
+            font-size: 44px;
+            font-weight: normal;
+            color: #2c2520;
+            margin: 0 0 5px 0;
+            letter-spacing: 4px;
+        }
+
+        /* Декоративный разделитель */
+        .divider {
+            height: 1px;
+            width: 180px;
+            background: linear-gradient(to right, transparent, #c3a475, transparent);
+            margin: 12px auto 18px auto;
+            position: relative;
+        }
+        .divider::after {
+            content: "❖";
+            position: absolute;
+            top: -9px;
+            left: 82px;
+            color: #8c6f47;
+            background: #ffffff;
+            padding: 0 4px;
+            font-size: 12px;
+        }
+
+        .certify-text {
+            font-size: 16px;
+            color: #6e6153;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .student-name {
+            font-size: 32px;
+            color: #1a1512;
+            font-weight: bold;
+            border-bottom: 2px solid #eadecc;
+            display: inline-block;
+            padding: 0 30px 4px 30px;
+            margin-bottom: 20px;
+        }
+
+        .course-details {
+            font-size: 17px;
+            line-height: 1.7;
+            color: #4a3f35;
+            max-width: 700px;
+            margin: 0 auto 20px auto;
+        }
+
+        .course-name {
+            color: #8c6f47;
+            font-weight: bold;
+            font-size: 21px;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .highlight-box {
+            display: inline-block;
+            background-color: #fdfbf7;
+            border: 1px dashed #d9ceb8;
+            padding: 4px 16px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #5c5043;
+            margin-top: 10px;
+        }
+
+        /* Коммерческий футер с жесткой фиксацией снизу во избежание обрезки */
+        .certificate-footer {
+            position: absolute;
+            bottom: 35px;
+            left: 50px;
+            right: 50px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-top: 1px solid #ebdcc5;
+            padding-top: 15px;
+        }
+
+        .footer-item {
+            width: 30%;
+        }
+
+        .footer-value {
+            font-size: 14px;
+            color: #2c2520;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Контейнер для наложения графики */
+        .signature-container {
+            position: relative;
+            height: 95px; /* Зафиксировали высоту под увеличенную печать */
+            width: 320px;  
+            margin: 0 auto;
+        }
+
+        /* ПОДПИСЬ: Увеличенная на 30% */
+        .img-signature {
+            height: 72px;
+            position: absolute;
+            left: 15px;
+            bottom: 15px;
+            z-index: 2; 
+        }
+
+        /* ПЕЧАТЬ: Увеличена на 20% (118px) и смещена вправо на 2 см */
+        .img-seal {
+            height: 118px;
+            position: absolute;
+            left: calc(65px + 1cm); /* Сдвиг ровно на 2 сантиметра вправо */
+            bottom: -5px; 
+            z-index: 1; 
+            opacity: 0.90;
+        }
+
+        .signature-line {
+            width: 200px;
+            border-bottom: 1px solid #a89575;
+            margin: 0 auto 6px auto;
+        }
+
+        .footer-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #8c765c;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="certificate-container">
+        <!-- Внутренние декоративные уголки -->
+        <div class="corner top-left"></div>
+        <div class="corner top-right"></div>
+        <div class="corner bottom-left"></div>
+        <div class="corner bottom-right"></div>
+
+        <div class="certificate-inner">
+            <div class="brand-header">Название вашей организации</div>
+            
+            <h1>СЕРТИФИКАТ</h1>
+            
+            <div class="divider"></div>
+            
+            <div class="certify-text">настоящим подтверждает, что</div>
+            
+            <div class="student-name">{{ student_name }}</div>
+            
+            <div class="course-details">
+                успешно завершил(а) обучение и прошел(ла) финальную аттестацию на курсе:
+                <span class="course-name">«{{ course_name }}»</span>
+                <div class="highlight-box">
+                    Результат защиты проекта: <strong>{{ score }} баллов</strong> из 100 возможных
+                </div>
+            </div>
+            
+            <div class="certificate-footer">
+                <!-- Левый блок: Дата -->
+                <div class="footer-item" style="text-align: left;">
+                    <div class="footer-value" style="padding-bottom: 5px;">{{ issue_date }}</div>
+                    <div class="footer-label" style="text-align: left;">Дата выдачи</div>
+                </div>
+                
+                <!-- Центральный блок: Визуальные печать и подпись -->
+                <div class="footer-item" style="text-align: center;">
+                    <div class="signature-container">
+                        <img class="img-signature" src="{{ signature_path }}" alt="Подпись">
+                        <img class="img-seal" src="{{ stamp_path }}" alt="Печать">
+                    </div>
+                    <div class="signature-line"></div>
+                    <div class="footer-label">Подпись ответственного лица и печать</div>
+                </div>
+                
+                <!-- Правый блок: Номер документа -->
+                <div class="footer-item" style="text-align: right;">
+                    <div class="footer-value" style="padding-bottom: 5px;">№ {{ score }}</div>
+                    <div class="footer-label" style="text-align: right;">Номер сертификата</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

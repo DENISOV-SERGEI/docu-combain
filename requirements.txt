@@ -1,0 +1,2 @@
+openpyxl==3.1.5
+WeasyPrint==70.0
