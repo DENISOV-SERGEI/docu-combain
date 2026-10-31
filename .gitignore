@@ -14,6 +14,7 @@ dist/
 # Generated documents and logs
 output/
 *.pdf
+!certificate_001.pdf
 *.log
 
 # Local workbooks may contain personal information
